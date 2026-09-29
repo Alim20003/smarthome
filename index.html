@@ -7,14 +7,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
+  <div class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">
+    <span id="themeIcon">🌙</span>
+  </div>
 
+  <main class="container">
     <!-- Header -->
     <header>
-      <div class="brand-icon">🏠</div>
-      <div>
-        <h1>منزلي</h1>
-        <p>Smart Home Control</p>
+      <div class="header-left">
+        <div class="brand-icon">🏠</div>
+        <div>
+          <h1>منزلي</h1>
+          <p>Smart Home Control</p>
+        </div>
       </div>
       <span id="connection" class="status offline">● غير متصل</span>
     </header>
@@ -26,12 +31,12 @@
       <span id="modeStatus" class="mode-status">🌐 وضع أونلاين - Firebase</span>
     </div>
 
-    <!-- ملخص -->
+    <!-- ملخص كل اللوحات -->
     <div class="summary-bar">
       <div class="summary-item">
         <div class="summary-row">
           <span>🟢</span>
-          <span class="summary-count" id="countOn">0</span>
+          <span class="summary-count" id="totalOn">0</span>
         </div>
         <span class="summary-label">شغّال</span>
       </div>
@@ -39,76 +44,27 @@
       <div class="summary-item">
         <div class="summary-row">
           <span>⚫</span>
-          <span class="summary-count" id="countOff">4</span>
+          <span class="summary-count" id="totalOff">0</span>
         </div>
         <span class="summary-label">مطفي</span>
       </div>
       <div class="summary-divider"></div>
       <div class="summary-item">
         <div class="summary-row">
-          <span>💡</span>
-          <span class="summary-count">4</span>
+          <span>🔌</span>
+          <span class="summary-count" id="totalBoards">0</span>
         </div>
-        <span class="summary-label">الإجمالي</span>
+        <span class="summary-label">لوحة</span>
       </div>
     </div>
 
-    <!-- تشغيل/إيقاف الكل -->
-    <div class="all-toggle">
-      <button id="btnAllOn"  class="btn-all btn-all-on">⚡ تشغيل الكل</button>
-      <button id="btnAllOff" class="btn-all btn-all-off">🔴 إيقاف الكل</button>
+    <!-- اللوحات -->
+    <div id="boardsContainer">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>جارٍ تحميل اللوحات...</p>
+      </div>
     </div>
-
-    <!-- المفاتيح -->
-    <section class="grid">
-      <article class="card" id="card1">
-        <div class="lamp off" id="lamp1">💡</div>
-        <div class="info">
-          <h2 id="name1">المفتاح 1</h2>
-          <p id="state1">مطفي</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="switch1">
-          <span class="slider"></span>
-        </label>
-      </article>
-
-      <article class="card" id="card2">
-        <div class="lamp off" id="lamp2">💡</div>
-        <div class="info">
-          <h2 id="name2">المفتاح 2</h2>
-          <p id="state2">مطفي</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="switch2">
-          <span class="slider"></span>
-        </label>
-      </article>
-
-      <article class="card" id="card3">
-        <div class="lamp off" id="lamp3">💡</div>
-        <div class="info">
-          <h2 id="name3">المفتاح 3</h2>
-          <p id="state3">مطفي</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="switch3">
-          <span class="slider"></span>
-        </label>
-      </article>
-
-      <article class="card" id="card4">
-        <div class="lamp off" id="lamp4">💡</div>
-        <div class="info">
-          <h2 id="name4">المفتاح 4</h2>
-          <p id="state4">مطفي</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="switch4">
-          <span class="slider"></span>
-        </label>
-      </article>
-    </section>
 
     <!-- إعدادات ESP -->
     <div class="esp-settings">
@@ -124,11 +80,31 @@
 
     <!-- آخر تحديث -->
     <div class="log">
-      <h3>آخر تحديث</h3>
+      <span class="log-icon">🕐</span>
       <p id="lastUpdate">في انتظار الاتصال...</p>
     </div>
 
   </main>
   <script type="module" src="app.js"></script>
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('themeIcon');
+      if (body.classList.contains('light')) {
+        body.classList.remove('light');
+        icon.textContent = '🌙';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.classList.add('light');
+        icon.textContent = '☀️';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    // تحميل الثيم المحفوظ
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light');
+      document.getElementById('themeIcon').textContent = '☀️';
+    }
+  </script>
 </body>
 </html>
